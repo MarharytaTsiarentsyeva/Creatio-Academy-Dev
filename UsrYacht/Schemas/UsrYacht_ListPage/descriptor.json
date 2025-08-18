@@ -1,0 +1,14 @@
+﻿{
+  "Descriptor": {
+    "UId": "2989f22c-6df1-459b-8323-b7a6daa69971",
+    "Name": "UsrYacht_ListPage",
+    "ModifiedOnUtc": "\/Date(1755543859000)\/",
+    "Parent": {
+      "UId": "b7b898d0-8c77-4953-c097-23fa6800da02",
+      "Name": "ListPageV3Template"
+    },
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "Yacht list page",
+    "DependsOn": []
+  }
+}
