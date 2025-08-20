@@ -51,6 +51,27 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 			},
 			{
 				"operation": "insert",
+				"name": "PushMeButton",
+				"values": {
+					"type": "crt.Button",
+					"caption": "#ResourceString(PushMeButton_caption)#",
+					"color": "outline",
+					"disabled": false,
+					"size": "medium",
+					"iconPosition": "left-icon",
+					"visible": true,
+					"clicked": {
+						"request": "usr.PushButtonRequest"
+					},
+					"clickMode": "default",
+					"icon": "flag-button-icon"
+				},
+				"parentName": "CardToggleContainer",
+				"propertyName": "items",
+				"index": 1
+			},
+			{
+				"operation": "insert",
 				"name": "UsrName",
 				"values": {
 					"layoutConfig": {
@@ -111,6 +132,59 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 				"parentName": "SideAreaProfileContainer",
 				"propertyName": "items",
 				"index": 2
+			},
+			{
+				"operation": "insert",
+				"name": "Country",
+				"values": {
+					"layoutConfig": {
+						"column": 1,
+						"colSpan": 1,
+						"row": 4,
+						"rowSpan": 1
+					},
+					"type": "crt.ComboBox",
+					"label": "$Resources.Strings.PDS_UsrCountry_ryexrqw",
+					"labelPosition": "above",
+					"control": "$PDS_UsrCountry_ryexrqw",
+					"listActions": [],
+					"showValueAsLink": false,
+					"controlActions": [],
+					"visible": true,
+					"readonly": false,
+					"placeholder": "",
+					"tooltip": "",
+					"valueDetails": null
+				},
+				"parentName": "SideAreaProfileContainer",
+				"propertyName": "items",
+				"index": 3
+			},
+			{
+				"operation": "insert",
+				"name": "City",
+				"values": {
+					"layoutConfig": {
+						"column": 1,
+						"colSpan": 1,
+						"row": 5,
+						"rowSpan": 1
+					},
+					"type": "crt.ComboBox",
+					"label": "$Resources.Strings.PDS_UsrColumn13_x289v87",
+					"labelPosition": "above",
+					"control": "$PDS_UsrColumn13_x289v87",
+					"listActions": [],
+					"showValueAsLink": false,
+					"controlActions": [],
+					"visible": true,
+					"readonly": false,
+					"placeholder": "",
+					"tooltip": ""
+				},
+				"parentName": "SideAreaProfileContainer",
+				"propertyName": "items",
+				"index": 4
 			},
 			{
 				"operation": "insert",
@@ -328,6 +402,63 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 				"parentName": "GeneralInfoTabContainer",
 				"propertyName": "items",
 				"index": 7
+			},
+			{
+				"operation": "insert",
+				"name": "NumberInput_qsdy0jj",
+				"values": {
+					"layoutConfig": {
+						"column": 1,
+						"colSpan": 1,
+						"row": 5,
+						"rowSpan": 1
+					},
+					"type": "crt.NumberInput",
+					"label": "$Resources.Strings.PDS_UsrTicketPrice_vi2m1mq",
+					"labelPosition": "above",
+					"control": "$PDS_UsrTicketPrice_vi2m1mq",
+					"visible": false,
+					"readonly": true,
+					"placeholder": "",
+					"tooltip": ""
+				},
+				"parentName": "GeneralInfoTabContainer",
+				"propertyName": "items",
+				"index": 8
+			},
+			{
+				"operation": "insert",
+				"name": "MoreDataTabContainer",
+				"values": {
+					"type": "crt.TabContainer",
+					"items": [],
+					"caption": "#ResourceString(MoreDataTabContainer_caption)#",
+					"iconPosition": "only-text",
+					"visible": true
+				},
+				"parentName": "Tabs",
+				"propertyName": "items",
+				"index": 1
+			},
+			{
+				"operation": "insert",
+				"name": "GridContainer_b4wqpr7",
+				"values": {
+					"type": "crt.GridContainer",
+					"items": [],
+					"rows": "minmax(32px, max-content)",
+					"columns": [
+						"minmax(32px, 1fr)",
+						"minmax(32px, 1fr)"
+					],
+					"gap": {
+						"columnGap": "large",
+						"rowGap": 0
+					}
+				},
+				"parentName": "MoreDataTabContainer",
+				"propertyName": "items",
+				"index": 0
 			}
 		]/**SCHEMA_VIEW_CONFIG_DIFF*/,
 		viewModelConfigDiff: /**SCHEMA_VIEW_MODEL_CONFIG_DIFF*/[
@@ -391,6 +522,21 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 						"modelConfig": {
 							"path": "PDS.UsrRegNumber"
 						}
+					},
+					"PDS_UsrCountry_ryexrqw": {
+						"modelConfig": {
+							"path": "PDS.UsrCountry"
+						}
+					},
+					"PDS_UsrColumn13_x289v87": {
+						"modelConfig": {
+							"path": "PDS.UsrColumn13"
+						}
+					},
+					"PDS_UsrTicketPrice_vi2m1mq": {
+						"modelConfig": {
+							"path": "PDS.UsrTicketPrice"
+						}
 					}
 				}
 			},
@@ -430,7 +576,21 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 				}
 			}
 		]/**SCHEMA_MODEL_CONFIG_DIFF*/,
-		handlers: /**SCHEMA_HANDLERS*/[]/**SCHEMA_HANDLERS*/,
+		handlers: /**SCHEMA_HANDLERS*/[
+			{
+				request: "usr.PushButtonRequest",
+				/* Implementation of the custom query handler. */
+				handler: async (request, next) => {
+					console.log("Button works...");
+					Terrasoft.showInformation("My button was pressed.");
+					var price = await request.$context.PDS_UsrPrice_m50fhoc;
+					console.log("Price = " + price);
+					request.$context.PDS_UsrComment_06bcpap = "comment from JS code!";
+					/* Call the next handler if it exists and return its result. */
+					return next?.handle(request);
+				}
+			}
+		]/**SCHEMA_HANDLERS*/,
 		converters: /**SCHEMA_CONVERTERS*/{}/**SCHEMA_CONVERTERS*/,
 		validators: /**SCHEMA_VALIDATORS*/{}/**SCHEMA_VALIDATORS*/
 	};
