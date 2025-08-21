@@ -1,0 +1,13 @@
+﻿{
+  "Descriptor": {
+    "UId": "e5fe07c6-e41f-429b-a176-b13f8d069841",
+    "Name": "UsrAverageTicketPricePage",
+    "ModifiedOnUtc": "\/Date(1755796820000)\/",
+    "Parent": {
+      "UId": "27e1b215-163a-4b82-b0a6-9872a8dde6e4",
+      "Name": "PageWithTopAreaAndTabsFreedomTemplate"
+    },
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "Average Ticket Price Page"
+  }
+}

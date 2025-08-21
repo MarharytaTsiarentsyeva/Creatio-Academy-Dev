@@ -1,0 +1,10 @@
+﻿{
+  "Descriptor": {
+    "UId": "28d63771-62a5-43af-b048-3901a9103010",
+    "Name": "UsrCalcAvgTicketPriceProcess",
+    "ModifiedOnUtc": "\/Date(1755797939000)\/",
+    "ManagerName": "ProcessSchemaManager",
+    "Caption": "Calculate average ticket price process",
+    "DependsOn": []
+  }
+}
