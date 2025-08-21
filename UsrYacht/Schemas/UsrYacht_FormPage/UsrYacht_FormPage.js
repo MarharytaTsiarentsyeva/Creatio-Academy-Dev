@@ -381,7 +381,7 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 			},
 			{
 				"operation": "insert",
-				"name": "Comment",
+				"name": "ManagerEmail",
 				"values": {
 					"layoutConfig": {
 						"column": 2,
@@ -389,15 +389,16 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 						"row": 4,
 						"rowSpan": 1
 					},
-					"type": "crt.Input",
-					"label": "$Resources.Strings.PDS_UsrComment_06bcpap",
+					"type": "crt.EmailInput",
+					"label": "$Resources.Strings.PDS_UsrManagerEmail_yycy19m",
+					"control": "$PDS_UsrManagerEmail_yycy19m",
 					"labelPosition": "above",
-					"control": "$PDS_UsrComment_06bcpap",
-					"multiline": false,
-					"visible": true,
-					"readonly": false,
 					"placeholder": "",
-					"tooltip": ""
+					"tooltip": "",
+					"needHandleSave": false,
+					"caption": "#ResourceString(ManagerEmail_caption)#",
+					"visible": true,
+					"readonly": true
 				},
 				"parentName": "GeneralInfoTabContainer",
 				"propertyName": "items",
@@ -425,6 +426,30 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 				"parentName": "GeneralInfoTabContainer",
 				"propertyName": "items",
 				"index": 8
+			},
+			{
+				"operation": "insert",
+				"name": "Comment",
+				"values": {
+					"layoutConfig": {
+						"column": 2,
+						"colSpan": 1,
+						"row": 5,
+						"rowSpan": 1
+					},
+					"type": "crt.Input",
+					"label": "$Resources.Strings.PDS_UsrComment_06bcpap",
+					"labelPosition": "above",
+					"control": "$PDS_UsrComment_06bcpap",
+					"multiline": false,
+					"visible": true,
+					"readonly": false,
+					"placeholder": "",
+					"tooltip": ""
+				},
+				"parentName": "GeneralInfoTabContainer",
+				"propertyName": "items",
+				"index": 9
 			},
 			{
 				"operation": "insert",
@@ -476,6 +501,15 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 					"PDS_UsrPrice_m50fhoc": {
 						"modelConfig": {
 							"path": "PDS.UsrPrice"
+						},
+						"validators": {
+							"MySuperValidator": {
+								"type": "usr.DGValidator",
+								"params": {
+									"minValue": 20,
+									"message": "#ResourceString(PriceCannotBeLess)#"
+								}
+							}
 						}
 					},
 					"PDS_UsrDriveType_8nqpnny": {
@@ -491,16 +525,43 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 					"PDS_UsrLength_h1d7hf0": {
 						"modelConfig": {
 							"path": "PDS.UsrLength"
+						},
+						"validators": {
+							"MySuperValidator": {
+								"type": "usr.DGValidator",
+								"params": {
+									"minValue": 3,
+									"message": "#ResourceString(LengthCannotBeLess)#"
+								}
+							}
 						}
 					},
 					"PDS_UsrCrewCount_9d5u7dv": {
 						"modelConfig": {
 							"path": "PDS.UsrCrewCount"
+						},
+						"validators": {
+							"MySuperValidator": {
+								"type": "usr.DGValidator",
+								"params": {
+									"minValue": 1,
+									"message": "#ResourceString(CrewCountCannotBeLess)#"
+								}
+							}
 						}
 					},
 					"PDS_UsrPassengersCount_apqdw3q": {
 						"modelConfig": {
 							"path": "PDS.UsrPassengersCount"
+						},
+						"validators": {
+							"MySuperValidator": {
+								"type": "usr.DGValidator",
+								"params": {
+									"minValue": 2,
+									"message": "#ResourceString(PassangersCannotBeLess)#"
+								}
+							}
 						}
 					},
 					"PDS_UsrColumn8_wi17h69": {
@@ -537,6 +598,11 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 						"modelConfig": {
 							"path": "PDS.UsrTicketPrice"
 						}
+					},
+					"PDS_UsrManagerEmail_yycy19m": {
+						"modelConfig": {
+							"path": "PDS.UsrManagerEmail_yycy19m"
+						}
 					}
 				}
 			},
@@ -569,7 +635,13 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 					"PDS": {
 						"type": "crt.EntityDataSource",
 						"config": {
-							"entitySchemaName": "UsrYacht"
+							"entitySchemaName": "UsrYacht",
+							"attributes": {
+								"UsrManagerEmail_yycy19m": {
+									"path": "UsrManager.Email",
+									"type": "ForwardReference"
+								}
+							}
 						},
 						"scope": "page"
 					}
@@ -589,9 +661,56 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/[]/**SCHEMA_DEPS*/, function/**SCHEM
 					/* Call the next handler if it exists and return its result. */
 					return next?.handle(request);
 				}
-			}
+			},
+			{
+				request: "crt.HandleViewModelAttributeChangeRequest",
+				/* The custom implementation of the system query handler. */
+				handler: async (request, next) => {
+      				if (request.attributeName === 'PDS_UsrPrice_m50fhoc' || 		        // if price changed
+					   request.attributeName === 'PDS_UsrPassengersCount_apqdw3q' ) { 		// or Passenger count changed
+						var price = await request.$context.PDS_UsrPrice_m50fhoc;
+						var passengers = await request.$context.PDS_UsrPassengersCount_apqdw3q;
+						var ticket_price = price / passengers;
+						request.$context.PDS_UsrTicketPrice_vi2m1mq = ticket_price;
+					}
+					/* Call the next handler if it exists and return its result. */
+					return next?.handle(request);
+				}
+			},
 		]/**SCHEMA_HANDLERS*/,
 		converters: /**SCHEMA_CONVERTERS*/{}/**SCHEMA_CONVERTERS*/,
-		validators: /**SCHEMA_VALIDATORS*/{}/**SCHEMA_VALIDATORS*/
+		validators: /**SCHEMA_VALIDATORS*/{
+			/* The validator type must contain a vendor prefix.
+			Format the validator type in PascalCase. */
+			"usr.DGValidator": {
+				validator: function (config) {
+					return function (control) {
+						let value = control.value;
+						let minValue = config.minValue;
+						let valueIsCorrect = value >= minValue;
+						let result;
+						if (valueIsCorrect) {
+							result = null;
+						} else {
+							result = {
+								"usr.DGValidator": { 
+									message: config.message
+								}
+							};
+						}
+						return result;
+					};
+				},
+				params: [
+					{
+						name: "minValue"
+					},
+					{
+						name: "message"
+					}
+				],
+				async: false
+			}
+		}/**SCHEMA_VALIDATORS*/
 	};
 });
