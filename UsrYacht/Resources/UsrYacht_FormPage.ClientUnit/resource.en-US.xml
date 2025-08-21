@@ -9,8 +9,16 @@
 			<Item Name="LocalizableStrings.addRecord_t4kmxdm_caption.Value" Value="Add new" />
 			<Item Name="LocalizableStrings.addRecord_tzw7tks_caption.Value" Value="Add new" />
 			<Item Name="LocalizableStrings.addRecord_wj7pvt3_caption.Value" Value="Add new" />
+			<Item Name="LocalizableStrings.CategoryMultiSelect_label.Value" Value="Categories" />
 			<Item Name="LocalizableStrings.CrewCountCannotBeLess.Value" Value="Crew count cannot be less than 1 person" />
 			<Item Name="LocalizableStrings.EmailInput_mjq9iu5_label.Value" Value="Email address" />
+			<Item Name="LocalizableStrings.ExpansionPanel_nfipuu3_title.Value" Value="Yacht rental" />
+			<Item Name="LocalizableStrings.GridDetailAddBtn_vyhlx18_caption.Value" Value="New" />
+			<Item Name="LocalizableStrings.GridDetailExportDataBtn_gcaawvf_caption.Value" Value="Export to Excel" />
+			<Item Name="LocalizableStrings.GridDetailImportDataBtn_uoa2mpq_caption.Value" Value="Data import" />
+			<Item Name="LocalizableStrings.GridDetailRefreshBtn_rykzm08_caption.Value" Value="Refresh" />
+			<Item Name="LocalizableStrings.GridDetailSearchFilter_unn121r_placeholder.Value" Value="Search" />
+			<Item Name="LocalizableStrings.GridDetailSettingsBtn_t6rsp1m_caption.Value" Value="Actions" />
 			<Item Name="LocalizableStrings.LengthCannotBeLess.Value" Value="Length can't be less than 3 m" />
 			<Item Name="LocalizableStrings.ManagerEmail_caption.Value" Value="Email address" />
 			<Item Name="LocalizableStrings.MoreDataTabContainer_caption.Value" Value="More data" />
