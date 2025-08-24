@@ -648,7 +648,9 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 					"color": "default",
 					"size": "medium",
 					"clickMode": "menu",
-					"menuItems": []
+					"menuItems": [],
+					"visible": true,
+					"clicked": {}
 				},
 				"parentName": "FlexContainer_3nvb44d",
 				"propertyName": "items",
@@ -765,6 +767,11 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 								"enable": true,
 								"multiple": true
 							}
+						},
+						"editable": {
+							"enable": false,
+							"itemsCreation": false,
+							"floatingEditPanel": false
 						}
 					},
 					"items": "$GridDetail_2dutr75",
@@ -805,9 +812,17 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 							"caption": "#ResourceString(GridDetail_2dutr75DS_UsrRentalEndDate)#",
 							"dataValueType": 8,
 							"width": 119.99999237060547
+						},
+						{
+							"id": "32a6a109-a221-ebce-3f7b-47d216b43a9a",
+							"code": "GridDetail_2dutr75DS_UsrTotalPrice",
+							"caption": "#ResourceString(GridDetail_2dutr75DS_UsrTotalPrice)#",
+							"dataValueType": 32
 						}
 					],
-					"placeholder": false
+					"placeholder": false,
+					"visible": true,
+					"fitContent": true
 				},
 				"parentName": "GridContainer_wkztmm1",
 				"propertyName": "items",
@@ -887,7 +902,7 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 							"MySuperValidator": {
 								"type": "usr.DGValidator",
 								"params": {
-									"minValue": 20,
+									"minValue": 100,
 									"message": "#ResourceString(PriceCannotBeLess)#"
 								}
 							}
@@ -911,7 +926,7 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 							"MySuperValidator": {
 								"type": "usr.DGValidator",
 								"params": {
-									"minValue": 3,
+									"minValue": 4,
 									"message": "#ResourceString(LengthCannotBeLess)#"
 								}
 							}
@@ -958,6 +973,11 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 					"PDS_UsrComment_06bcpap": {
 						"modelConfig": {
 							"path": "PDS.UsrComment"
+						},
+						"validators": {
+							"required": {
+								"type": "crt.Required"
+							}
 						}
 					},
 					"PDS_UsrRegNumber_9p4hk3k": {
@@ -998,8 +1018,8 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 							"sortingConfig": {
 								"default": [
 									{
-										"direction": "asc",
-										"columnName": "UsrManager"
+										"direction": "desc",
+										"columnName": "UsrTotalPrice"
 									}
 								]
 							}
@@ -1029,6 +1049,11 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 								"GridDetail_2dutr75DS_UsrRentalEndDate": {
 									"modelConfig": {
 										"path": "GridDetail_2dutr75DS.UsrRentalEndDate"
+									}
+								},
+								"GridDetail_2dutr75DS_UsrTotalPrice": {
+									"modelConfig": {
+										"path": "GridDetail_2dutr75DS.UsrTotalPrice"
 									}
 								},
 								"GridDetail_2dutr75DS_Id": {
@@ -1108,6 +1133,9 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 								},
 								"UsrRentalEndDate": {
 									"path": "UsrRentalEndDate"
+								},
+								"UsrTotalPrice": {
+									"path": "UsrTotalPrice"
 								}
 							}
 						}
@@ -1135,9 +1163,9 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 				handler: async (request, next) => {
       				if (request.attributeName === 'PDS_UsrPrice_m50fhoc' || 		        // if price changed
 					   request.attributeName === 'PDS_UsrPassengersCount_apqdw3q' ) { 		// or Passenger count changed
-						var price = await request.$context.PDS_UsrPrice_m50fhoc;
-						var passengers = await request.$context.PDS_UsrPassengersCount_apqdw3q;
-						var ticket_price = price / passengers;
+						var price = Number(await request.$context.PDS_UsrPrice_m50fhoc) || 0;
+						var passengers = Number(await request.$context.PDS_UsrPassengersCount_apqdw3q) || 0;
+						var ticket_price = passengers > 0 ? Number((price / passengers).toFixed(2)) : 0;
 						request.$context.PDS_UsrTicketPrice_vi2m1mq = ticket_price;
 					}
 					/* Call the next handler if it exists and return its result. */
@@ -1172,6 +1200,30 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 					console.log("response max price = " + response.body.GetMaxPriceByDriveTypeIdResult);
 					/* Call the next handler if it exists and return its result. */
 					return next?.handle(request);
+				}
+			},
+			{
+				request: "crt.HandleViewModelAttributeChangeRequest",
+		        handler: async (request, next) => {
+		          // action add/change price
+		          if (request.attributeName === "PDS_UsrPrice_m50fhoc") {
+		            const sysSettings = new sdk.SysSettingsService();
+		            // get setting value by code
+		            let setting = await sysSettings.getByCode("MinPriceToRequireYachtComment");
+					let limit = setting.value;
+		            
+		            // get current price
+		            const price = Number(await request.$context.PDS_UsrPrice_m50fhoc) || 0;
+
+		            if (price > limit) {
+		              // set comment required
+		              request.$context.enableAttributeValidator("PDS_UsrComment_06bcpap", "required");
+		            } else {
+		              // set comment NOT required
+		              request.$context.disableAttributeValidator("PDS_UsrComment_06bcpap", "required");
+			            }
+		          }
+		          return next?.handle(request);
 				}
 			}
 		]/**SCHEMA_HANDLERS*/,

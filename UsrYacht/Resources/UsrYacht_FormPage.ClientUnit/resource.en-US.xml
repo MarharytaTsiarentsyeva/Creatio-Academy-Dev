@@ -21,11 +21,11 @@
 			<Item Name="LocalizableStrings.GridDetailRefreshBtn_rykzm08_caption.Value" Value="Refresh" />
 			<Item Name="LocalizableStrings.GridDetailSearchFilter_unn121r_placeholder.Value" Value="Search" />
 			<Item Name="LocalizableStrings.GridDetailSettingsBtn_t6rsp1m_caption.Value" Value="Actions" />
-			<Item Name="LocalizableStrings.LengthCannotBeLess.Value" Value="Length can't be less than 3 m" />
+			<Item Name="LocalizableStrings.LengthCannotBeLess.Value" Value="Length can't be less than 4 m" />
 			<Item Name="LocalizableStrings.ManagerEmail_caption.Value" Value="Email address" />
 			<Item Name="LocalizableStrings.MoreDataTabContainer_caption.Value" Value="More data" />
 			<Item Name="LocalizableStrings.PassangersCannotBeLess.Value" Value="Passangers count cannot be less than 2 person" />
-			<Item Name="LocalizableStrings.PriceCannotBeLess.Value" Value="Price cannot be less than 20.0 EUR" />
+			<Item Name="LocalizableStrings.PriceCannotBeLess.Value" Value="Price cannot be less than 100.0 EUR" />
 			<Item Name="LocalizableStrings.PushMeButton_caption.Value" Value="Push me!" />
 			<Item Name="LocalizableStrings.RunAvgTicketPriceMenuItem_caption.Value" Value="Start average ticket price process" />
 		</Items>

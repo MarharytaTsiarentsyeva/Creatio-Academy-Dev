@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resources Culture="en-US">
+	<Group Type="String">
+		<Items>
+			<Item Name="Caption" Value="UsrYachtAvgPriceServise" />
+			<Item Name="Description" Value="Web Service that return the average price of all Yacht records with corresponding drive type id and status = “Operational”. " />
+		</Items>
+	</Group>
+</Resources>
