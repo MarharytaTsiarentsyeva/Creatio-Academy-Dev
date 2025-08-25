@@ -10,6 +10,7 @@
 			<Item Name="LocalizableStrings.addRecord_tzw7tks_caption.Value" Value="Add new" />
 			<Item Name="LocalizableStrings.addRecord_wj7pvt3_caption.Value" Value="Add new" />
 			<Item Name="LocalizableStrings.Button_dcs73we_caption.Value" Value="Actions" />
+			<Item Name="LocalizableStrings.Button_k4l58xk_caption.Value" Value="Add your rentals" />
 			<Item Name="LocalizableStrings.CallMaxPriceWebServiseMenuItem_caption.Value" Value="Call max price web servise" />
 			<Item Name="LocalizableStrings.CategoryMultiSelect_label.Value" Value="Categories" />
 			<Item Name="LocalizableStrings.CrewCountCannotBeLess.Value" Value="Crew count cannot be less than 1 person" />

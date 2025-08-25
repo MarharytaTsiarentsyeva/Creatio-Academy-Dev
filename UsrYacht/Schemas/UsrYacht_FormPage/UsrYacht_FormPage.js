@@ -3,6 +3,14 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 		viewConfigDiff: /**SCHEMA_VIEW_CONFIG_DIFF*/[
 			{
 				"operation": "merge",
+				"name": "SaveButton",
+				"values": {
+					"size": "large",
+					"iconPosition": "only-text"
+				}
+			},
+			{
+				"operation": "merge",
 				"name": "Tabs",
 				"values": {
 					"styleType": "default",
@@ -58,6 +66,34 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 			},
 			{
 				"operation": "insert",
+				"name": "Button_k4l58xk",
+				"values": {
+					"type": "crt.Button",
+					"caption": "#ResourceString(Button_k4l58xk_caption)#",
+					"color": "primary",
+					"disabled": false,
+					"size": "medium",
+					"iconPosition": "left-icon",
+					"visible": true,
+					"clicked": {
+						"request": "crt.RunBusinessProcessRequest",
+						"params": {
+							"processName": "UsrCreateYachtRentalsBatch",
+							"processRunType": "ForTheSelectedPage",
+							"saveAtProcessStart": true,
+							"showNotification": true,
+							"recordIdProcessParameterName": "YachtId"
+						}
+					},
+					"clickMode": "default",
+					"icon": "copilot-rewrite-friendly-icon"
+				},
+				"parentName": "CardToggleContainer",
+				"propertyName": "items",
+				"index": 0
+			},
+			{
+				"operation": "insert",
 				"name": "Button_dcs73we",
 				"values": {
 					"type": "crt.Button",
@@ -73,7 +109,7 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 				},
 				"parentName": "CardToggleContainer",
 				"propertyName": "items",
-				"index": 0
+				"index": 1
 			},
 			{
 				"operation": "insert",
@@ -133,7 +169,7 @@ define("UsrYacht_FormPage", /**SCHEMA_DEPS*/["@creatio-devkit/common"]/**SCHEMA_
 				},
 				"parentName": "CardToggleContainer",
 				"propertyName": "items",
-				"index": 2
+				"index": 3
 			},
 			{
 				"operation": "insert",
