@@ -12,13 +12,13 @@
 	[AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Required)]
 	public class UsrYachtAvgPriceService : BaseService, IReadOnlySessionState
 	{
-		// GUID статуса "Operational" (замени при необходимости)
+		// GUID status "Operational"
 		// private static readonly Guid OperationalStatusId = new Guid("877edb5b-22d8-40a9-bb3f-4f4c65f6dea3");
 
 		/// <summary>
-		/// Средняя цена яхт по driveTypeId и статусу Operational.
-		/// Если driveTypeId пустой/не GUID — возвращает -1.
-		/// Если подходящих записей нет — возвращает 0.
+		/// Average price yacht by driveTypeId & status Operational.
+		/// If driveTypeId not empty/not GUID — return -1.
+		/// If no matches records — return 0.
 		/// </summary>
 		[OperationContract]
 		[WebInvoke(
